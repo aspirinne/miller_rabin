@@ -61,39 +61,32 @@ def get_primes_in_set(a, raw):
     return tuple(ass_prime)
 
 
+def prohod(a, raw, control_raw):
+    result_raw = get_primes_in_set(a, raw)
+
+    err_list = list()
+    for assump in result_raw:
+        if assump not in control_raw:
+            err_list.append(assump)
+
+    # err = len(err_list)/len(control_raw)
+    err = len(err_list) / len(raw)
+
+    print(u'Чисел после прохода:', len(result_raw))
+    print(len(err_list), u' чисел определены ошибочно')
+    print(u'Ошибка: ', err)
+    return {'result': result_raw, 'miss_raw': err_list}
+
+
 # ------------------------------------------------------------------------------------------
 etalon = get_control_prime(PATH_TO_FILE)
+print(u'Всего ', len(etalon[:78497]), u' контрольных чисел')
 
 # --------------------------       Pervyi prohod       ----------------------------------------
 
 # Pizdec dolgaya huynya!!!!!
-mil = get_primes_in_set(2, range(3, 1000000, 2))
-
-# print(mil)
-
-# Oshibka posle pervogo prohoda
-err = (len(mil)-len(etalon[:78497]))/len(etalon[:78497])
-
-# --------------------------       Oshibochnye chisla       -----------------------------------
-
-err_list = list()
-
-for ct in mil:
-    if ct not in etalon:
-        err_list.append(ct)
-
-print(len(err_list), u' чисел определены ошибочно')
-print(u'Ошибка: ', err)
+mil = prohod(2, range(3, 1000000, 2), etalon[:78497])
 
 # --------------------------       Vtoroy prohod       ----------------------------------------
 
-second_mil = get_primes_in_set(3, err_list)
-
-second_err_list = list()
-
-for zt in second_mil:
-    if zt not in etalon:
-        second_err_list.append(zt)
-
-print(len(second_err_list), u' чисел определены ошибочно')
-print(u'Ошибка: ', len(second_err_list)/len(etalon[:78497]))
+second_mil = prohod(3, mil['miss_raw'], etalon[:78497])
