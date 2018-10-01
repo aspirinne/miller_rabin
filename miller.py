@@ -1,4 +1,5 @@
 import random
+import time
 
 
 PATH_TO_FILE = 'prime.txt'
@@ -72,6 +73,8 @@ def prohod(a, raw, control_raw):
     # err = len(err_list)/len(control_raw)
     err = len(err_list) / len(raw)
 
+    print("\n", len(raw), "\n")
+
     print(u'Чисел после прохода:', len(result_raw))
     print(len(err_list), u' чисел определены ошибочно')
     print(u'Ошибка: ', err)
@@ -82,11 +85,22 @@ def prohod(a, raw, control_raw):
 etalon = get_control_prime(PATH_TO_FILE)
 print(u'Всего ', len(etalon[:78497]), u' контрольных чисел')
 
+start_time = time.time()
+
 # --------------------------       Pervyi prohod       ----------------------------------------
 
+print("--------       Pervyi prohod       ---------")
 # Pizdec dolgaya huynya!!!!!
 mil = prohod(2, range(3, 1000000, 2), etalon[:78497])
 
+print('\nВремя первого прохода: ', time.time()-start_time)
+
+second_time = time.time()
+
 # --------------------------       Vtoroy prohod       ----------------------------------------
 
+print("--------       Vtoroy prohod       ---------")
 second_mil = prohod(3, mil['miss_raw'], etalon[:78497])
+
+print('\nВремя второго прохода: ', time.time()-second_time)
+print('\nВремя всей программы: ', time.time()-start_time)
