@@ -1,6 +1,8 @@
 import random
 import time
 
+import asyncio
+
 
 PATH_TO_FILE = 'prime.txt'
 
@@ -14,6 +16,7 @@ def get_control_prime(from_path):
     return tuple(control_prime)
 
 
+# @asyncio.coroutine
 def miller_test(number, count, *a):
     if type(number) != int or (number != 2 and number % 2 == 0):
         return 'Please, use the not even integer!'
@@ -55,10 +58,17 @@ def uravnenie(number):
 
 def get_primes_in_set(a, raw):
     ass_prime = list()
+
+    # futures = [ass_prime.append(numb) for numb in raw if miller_test(numb, 1, a) == 'prime']
+
     for numb in raw:
         assumption = miller_test(numb, 1, a)
         if assumption == 'prime':
             ass_prime.append(numb)
+
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(asyncio.wait(futures))
+
     return tuple(ass_prime)
 
 
