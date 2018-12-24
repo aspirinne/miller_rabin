@@ -1,22 +1,21 @@
 import random
 import time
 
-import asyncio
 
-
-PATH_TO_FILE = 'prime.txt'
+# PATH_TO_FILE = 'prime.txt'
+PATH_TO_FILE = 'dif_primes/primes_in_0_1000000'
 
 
 def get_control_prime(from_path):
     file = open(from_path)
     control_prime = list()
     for line in file:
-        control_prime.append(int(line.strip().split(' ')[1]))
+        # control_prime.append(int(line.strip().split(' ')[1]))
+        control_prime.append(int(line.strip()))
     control_prime.pop(0)
     return tuple(control_prime)
 
 
-# @asyncio.coroutine
 def miller_test(number, count, *a):
     if type(number) != int or (number != 2 and number % 2 == 0):
         return 'Please, use the not even integer!'
@@ -72,7 +71,7 @@ def get_primes_in_set(a, raw):
     return tuple(ass_prime)
 
 
-def prohod(a, raw, control_raw):
+def prohod(a, raw, control_raw, file=None):
     result_raw = get_primes_in_set(a, raw)
 
     err_list = list()
@@ -82,35 +81,40 @@ def prohod(a, raw, control_raw):
 
     # err = len(err_list)/len(control_raw)
     err = len(err_list) / len(raw)
+    if not file:
+        print("\nВ ряду: ", len(raw), " нечетных чисел\n")
 
-    print("\n", len(raw), "\n")
-
-    print(u'Чисел после прохода:', len(result_raw))
-    print(len(err_list), u' чисел определены ошибочно')
-    print(u'Ошибка: ', err)
+        print(u'Чисел после прохода:', len(result_raw))
+        print(len(err_list), u' чисел определены ошибочно')
+        print(u'Ошибка: ', err)
+    else:
+        print("\nВ ряду: ", len(raw), " нечетных чисел\n", file=file)
+        print(u'Чисел после прохода:', len(result_raw), file=file)
+        print(len(err_list), u' чисел определены ошибочно', file=file)
+        print(u'Ошибка: ', err, file=file)
     return {'result': result_raw, 'miss_raw': err_list}
 
 
-# ------------------------------------------------------------------------------------------
-etalon = get_control_prime(PATH_TO_FILE)
-print(u'Всего ', len(etalon[:78497]), u' контрольных чисел')
-
-start_time = time.time()
-
-# --------------------------       Pervyi prohod       ----------------------------------------
-
-print("--------       Pervyi prohod       ---------")
-# Pizdec dolgaya huynya!!!!!
-mil = prohod(2, range(3, 1000000, 2), etalon[:78497])
-
-print('\nВремя первого прохода: ', time.time()-start_time)
-
-second_time = time.time()
-
-# --------------------------       Vtoroy prohod       ----------------------------------------
-
-print("--------       Vtoroy prohod       ---------")
-second_mil = prohod(3, mil['miss_raw'], etalon[:78497])
-
-print('\nВремя второго прохода: ', time.time()-second_time)
-print('\nВремя всей программы: ', time.time()-start_time)
+# # ------------------------------------------------------------------------------------------
+# etalon = get_control_prime(PATH_TO_FILE)
+# print(u'Всего ', len(etalon[:78497]), u' контрольных чисел')
+#
+# start_time = time.time()
+#
+# # --------------------------       Pervyi prohod       ----------------------------------------
+#
+# print("--------       Pervyi prohod       ---------")
+# # Pizdec dolgaya huynya!!!!!
+# mil = prohod(2, range(3, 1000000, 2), etalon)
+#
+# print('\nВремя первого прохода: ', time.time()-start_time)
+#
+# second_time = time.time()
+#
+# # --------------------------       Vtoroy prohod       ----------------------------------------
+#
+# print("--------       Vtoroy prohod       ---------")
+# second_mil = prohod(3, mil['miss_raw'], etalon)
+#
+# print('\nВремя второго прохода: ', time.time()-second_time)
+# print('\nВремя всей программы: ', time.time()-start_time)
